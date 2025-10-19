@@ -21,4 +21,11 @@
   ];
 
   system.stateVersion = "24.05";
+
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:esmacimsit/beam-os#beamos";  # senin repo+config adı
+    dates = "hourly";        # "daily", "03:00", "Mon..Fri 03:00" da olur
+    allowReboot = false;     # reboot gerektiren güncellemelerde manuel reboot
+  };
 }
