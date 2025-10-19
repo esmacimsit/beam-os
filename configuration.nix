@@ -1,9 +1,14 @@
 { pkgs, ... }:
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "beamos";
   time.timeZone = "Europe/Istanbul";
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.consoleLogLevel = 3;
 
   users.users.beam = {
     isNormalUser = true;
@@ -20,12 +25,12 @@
     git
   ];
 
-  system.stateVersion = "24.05";
-
   system.autoUpgrade = {
     enable = true;
-    flake = "github:esmacimsit/beam-os#beamos";  # senin repo+config adı
-    dates = "hourly";        # "daily", "03:00", "Mon..Fri 03:00" da olur
-    allowReboot = false;     # reboot gerektiren güncellemelerde manuel reboot
+    flake = "github:esmacimsit/beam-os#beamos";
+    dates = "hourly";
+    allowReboot = false;
   };
+
+  system.stateVersion = "24.05";
 }
