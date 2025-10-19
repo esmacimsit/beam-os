@@ -6,9 +6,21 @@
   networking.hostName = "beamos";
   time.timeZone = "Europe/Istanbul";
 
+  # UEFI bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.consoleLogLevel = 3;
+
+  # >>> Disk bağlamaları (senin VM'ine göre) <<<
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";  # az önce ext4 ile böyle label verdik
+    fsType = "ext4";
+  };
+  fileSystems."/boot" = {
+    device = "/dev/sda1";                  # EFI bölümü
+    fsType = "vfat";
+  };
+  swapDevices = [ ];
 
   users.users.beam = {
     isNormalUser = true;
@@ -20,9 +32,7 @@
   virtualisation.docker.enable = true;
 
   environment.systemPackages = with pkgs; [
-    python312
-    docker
-    git
+    python312 docker git
   ];
 
   system.autoUpgrade = {
