@@ -6,12 +6,10 @@
   networking.hostName = "beamos";
   time.timeZone = "Europe/Istanbul";
 
-  # UEFI bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.consoleLogLevel = 3;
 
-  # >>> Disk bağlamaları (senin VM'ine göre) <<<
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";  # az önce ext4 ile böyle label verdik
     fsType = "ext4";
@@ -43,4 +41,15 @@
   };
 
   system.stateVersion = "24.05";
+
+  environment.etc."issue".text = builtins.readFile /etc/nixos/motd;
+
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PermitRootLogin = "yes";
+      PasswordAuthentication = true;
+    };
+  };
 }

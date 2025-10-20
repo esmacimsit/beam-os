@@ -1,0 +1,19 @@
+sudo -i
+
+parted -s /dev/sda mklabel gpt
+parted -s /dev/sda mkpart ESP fat32 1MiB 513MiB
+parted -s /dev/sda set 1 esp on
+parted -s /dev/sda mkpart primary ext4 513MiB 100%
+
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 -L nixos /dev/sda2
+
+mount /dev/disk/by-label/nixos /mnt
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot
+
+ping -c3 github.com
+
+nixos-install --no-write-lock-file --flake github:esmacimsit/beam-os?ref=main#beamos
+
+nixos-rebuild switch --flake github:esmacimsit/beam-os#beamos
