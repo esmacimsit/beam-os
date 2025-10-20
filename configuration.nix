@@ -11,11 +11,11 @@
   boot.consoleLogLevel = 3;
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";  # az önce ext4 ile böyle label verdik
+    device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
   fileSystems."/boot" = {
-    device = "/dev/sda1";                  # EFI bölümü
+    device = "/dev/sda1";
     fsType = "vfat";
   };
   swapDevices = [ ];
